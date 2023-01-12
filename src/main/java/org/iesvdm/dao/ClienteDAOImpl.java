@@ -90,7 +90,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	 * Devuelve Optional de Cliente con el ID dado.
 	 */
 	@Override
-	public Optional<Cliente> find(int id) {
+	public Optional<Cliente> find(long id) {
 		
 		Cliente fab =  jdbcTemplate
 				.queryForObject("SELECT * FROM cliente WHERE id = ?"														

@@ -12,17 +12,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring_boot_web_mvc_jdbc_ventas</name>
 	<description>Proyecto Ventas</description>
-	<!-- properties anterior -->
-<!--	<properties>-->
-<!--		 mínima versión de java con spring boot 3 -->
-<!--		<java.version>17</java.version>-->
-<!--	</properties>-->
 	<properties>
+		<!-- mínima versión de java con spring boot 3 -->
 		<java.version>17</java.version>
-
-		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
-		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-
 	</properties>
 	<dependencies>
 
@@ -98,72 +90,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-				<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok-mapstruct-binding</artifactId>
-			<version>${lombok-mapstruct-binding.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>${org.mapstruct.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/</directory>
-				<includes>
-					<include>**/*.html</include>
-					<include>**/*.properties</include>
-				</includes>
-			</resource>
-		</resources>
-		
 		<plugins>
-			<!-- plugin anterior -->
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					 incluir cuando tarea mvn build:-->
-<!--				<excludeDevtools>true</excludeDevtools> -->
-<!--					<excludes>-->
-<!--						 se excluye la dependencia de lombok de la tarea mvn build-->
-<!--						<exclude>-->
-<!--							<groupId>org.projectlombok</groupId>-->
-<!--							<artifactId>lombok</artifactId>-->
-<!--						</exclude>-->
-<!--					</excludes>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<source>17</source>
-					<target>17</target>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${org.mapstruct.version}</version>
-						</path>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>1.18.22</version>
-						</path>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
-						</path>
-					</annotationProcessorPaths>
+					<!-- incluir cuando tarea mvn build:
+				<excludeDevtools>true</excludeDevtools> -->
 					<excludes>
+						<!-- se excluye la dependencia de lombok de la tarea mvn build-->
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>

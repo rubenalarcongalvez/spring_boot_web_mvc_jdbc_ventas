@@ -1,5 +1,7 @@
 package org.iesvdm.modelo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +12,12 @@ import lombok.NoArgsConstructor;
 //Para generar un constructor con lombok con todos los args
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente {
+public class Pedido {
 	
 	private long id;
-	private String nombre;
-	private String apellido1;
-	private String apellido2;
-	private String ciudad;
-	private int categoria;
+	private double total;
+	private Date fecha;
+	private long id_cliente;
+	private long id_comercial;
 	
 }
