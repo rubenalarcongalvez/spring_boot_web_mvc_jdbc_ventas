@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
+import org.iesvdm.dto.PedidoDTO;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;

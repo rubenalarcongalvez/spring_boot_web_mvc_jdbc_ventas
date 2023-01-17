@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
-import org.iesvdm.dao.ComercialDTO;
-import org.iesvdm.dao.PedidoDTO;
+import org.iesvdm.dto.ComercialDTO;
+import org.iesvdm.dto.PedidoDTO;
+import org.iesvdm.mapstruct.ComercialMapper;
+import org.iesvdm.mapstruct.PedidoMapper;
 import org.iesvdm.modelo.Comercial;
 import org.iesvdm.service.ComercialService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,6 +2,7 @@ package org.iesvdm.dao;
 
 import java.util.List;
 
+import org.iesvdm.dto.PedidoDTO;
 import org.iesvdm.modelo.Pedido;
 
 public interface PedidoDAO {

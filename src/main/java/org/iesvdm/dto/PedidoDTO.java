@@ -1,4 +1,4 @@
-package org.iesvdm.dao;
+package org.iesvdm.dto;
 
 import java.sql.Date;
 
