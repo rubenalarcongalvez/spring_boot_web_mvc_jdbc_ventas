@@ -1,10 +1,17 @@
 package org.iesvdm.controlador;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.iesvdm.dto.ClienteDTO;
+import org.iesvdm.mapstruct.ClienteMapper;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.service.ClienteService;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +28,9 @@ import org.springframework.web.servlet.view.RedirectView;
 public class ClienteController {
 	
 	private ClienteService clienteService;
+	
+	@Autowired
+	private ClienteMapper clienteMapper;
 	
 	//Se utiliza inyección automática por constructor del framework Spring.
 	//Por tanto, se puede omitir la anotación Autowired
@@ -45,7 +55,26 @@ public class ClienteController {
 	public String detalle(Model model, @PathVariable Integer id ) {
 		
 		Cliente cliente = clienteService.one(id);
-		model.addAttribute("cliente", cliente);
+		
+		ArrayList<HashMap<String, Object>> listaDatos = clienteService.obtenerDatosAdicionales(id);
+		
+		ArrayList<ClienteDTO> listaClientesComerciales = new ArrayList<>();
+		
+		ClienteDTO clienteDTO;
+		
+		for (int i = 0; i < listaDatos.size(); i++) {
+			clienteDTO = clienteMapper.listaPedidos(cliente,
+					(String) listaDatos.get(i).get("nombreComercial"),
+					(int) listaDatos.get(i).get("idComercial"),
+					(int) listaDatos.get(i).get("numPedidosTotal"),
+					(int) listaDatos.get(i).get("numPedidosTrimestre"),
+					(int) listaDatos.get(i).get("numPedidosAnio"),
+					(int) listaDatos.get(i).get("numPedidosLustro"));
+
+			listaClientesComerciales.add(clienteDTO);
+		}
+		
+		model.addAttribute("listaClientesComerciales", listaClientesComerciales);
 		
 		return "detalle-cliente";
 		

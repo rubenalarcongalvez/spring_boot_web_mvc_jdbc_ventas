@@ -7,8 +7,6 @@ import java.util.OptionalDouble;
 
 import org.iesvdm.dto.ComercialDTO;
 import org.iesvdm.dto.PedidoDTO;
-import org.iesvdm.mapstruct.ComercialMapper;
-import org.iesvdm.mapstruct.PedidoMapper;
 import org.iesvdm.modelo.Comercial;
 import org.iesvdm.service.ComercialService;
 import org.springframework.beans.factory.annotation.Autowired;

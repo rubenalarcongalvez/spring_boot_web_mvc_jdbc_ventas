@@ -1,9 +1,13 @@
 package org.iesvdm.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.iesvdm.dao.ClienteDAO;
+import org.iesvdm.dto.ClienteDTO;
 import org.iesvdm.modelo.Cliente;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +35,14 @@ public class ClienteService {
 			return optCom.get();
 		else 
 			return null;
+	}
+	
+	public ArrayList<HashMap<String, Object>> obtenerDatosAdicionales(long id_cliente) {
+		ArrayList<Integer> IdsComerciales = clienteDAO.getIdComerciales(id_cliente);
+		
+		ArrayList<HashMap<String, Object>> listaDatos = clienteDAO.getClienteComercial(IdsComerciales);
+		
+		return listaDatos;
 	}
 
 	public void newCliente(Cliente cliente) {

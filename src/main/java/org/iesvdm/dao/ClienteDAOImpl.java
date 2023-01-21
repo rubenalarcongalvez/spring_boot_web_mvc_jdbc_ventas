@@ -1,9 +1,13 @@
 package org.iesvdm.dao;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.iesvdm.dto.ClienteDTO;
 import org.iesvdm.modelo.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -64,12 +68,12 @@ public class ClienteDAOImpl implements ClienteDAO {
 	}
 
 	/**
-	 * Devuelve lista con todos loa Clientes.
+	 * Devuelve lista con todos los Clientes.
 	 */
 	@Override
 	public List<Cliente> getAll() {
 		
-		List<Cliente> listFab = jdbcTemplate.query(
+		List<Cliente> listClie = jdbcTemplate.query(
                 "SELECT * FROM cliente",
                 (rs, rowNum) -> new Cliente(rs.getInt("id"),
                 						 	rs.getString("nombre"),
@@ -80,9 +84,9 @@ public class ClienteDAOImpl implements ClienteDAO {
                 						 	)
         );
 		
-		log.info("Devueltos {} registros.", listFab.size());
+		log.info("Devueltos {} registros.", listClie.size());
 		
-        return listFab;
+        return listClie;
         
 	}
 
@@ -92,7 +96,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	@Override
 	public Optional<Cliente> find(long id) {
 		
-		Cliente fab =  jdbcTemplate
+		Cliente clie =  jdbcTemplate
 				.queryForObject("SELECT * FROM cliente WHERE id = ?"														
 								, (rs, rowNum) -> new Cliente(rs.getInt("id"),
             						 						rs.getString("nombre"),
@@ -103,8 +107,8 @@ public class ClienteDAOImpl implements ClienteDAO {
 								, id
 								);
 		
-		if (fab != null) { 
-			return Optional.of(fab);}
+		if (clie != null) { 
+			return Optional.of(clie);}
 		else { 
 			log.info("Cliente no encontrado.");
 			return Optional.empty(); }
@@ -145,6 +149,128 @@ public class ClienteDAOImpl implements ClienteDAO {
 		
 		log.info("Delete de Cliente con {} registros eliminados.", rows);		
 		
+	}
+	
+	public ArrayList<Integer> getIdComerciales(long id_cliente) {
+		
+		ArrayList<Integer> listaIds = new ArrayList<>();
+		
+		jdbcTemplate.query(
+                """
+                		SELECT 
+						    ped.id_comercial
+						FROM
+						    comercial com
+						        INNER JOIN
+						    pedido ped ON com.id = ped.id_comercial
+						        INNER JOIN
+						    cliente clie ON clie.id = ped.id_cliente
+						WHERE
+						    clie.id = ?
+						GROUP BY ped.id_comercial;
+                		""",
+                (rs, rowNum) -> listaIds.add(rs.getInt("id_comercial"))
+                , id_cliente);
+		
+		return listaIds;
+	}
+	
+	/**
+	 * Devuelve lista con todos los parámetros necesarios de los pedidos a comerciales.
+	 * @return 
+	 */
+	@Override
+	public ArrayList<HashMap<String, Object>> getClienteComercial(ArrayList<Integer> listaIds) {
+		
+		ArrayList<HashMap<String, Object>> listaDatos = new ArrayList<>();
+		
+		for (int i = 0; i < listaIds.size(); i++) {
+			listaDatos.add(new HashMap<>());
+			
+			listaDatos.get(i).put("idComercial", listaIds.get(i));		
+			final int ii = i;
+			
+			jdbcTemplate.query(
+					"""
+	        		SELECT 
+					    CONCAT_WS(' ',
+					            com.nombre,
+					            com.apellido1,
+					            com.apellido2) AS nombreComercial
+					FROM
+					    comercial com
+					        INNER JOIN
+					    pedido ped ON com.id = ped.id_comercial
+					        INNER JOIN
+					    cliente clie ON clie.id = ped.id_cliente
+					WHERE
+					    com.id = ? group by com.id;
+	        		""",(rs, rowNum) -> listaDatos.get(ii).put("nombreComercial", rs.getString("nombreComercial"))
+	        , listaIds.get(i));
+			
+			jdbcTemplate.query(
+					"""
+	        		SELECT 
+					    COUNT(ped.id) AS numPedidosTotal
+					FROM
+					    comercial com
+					        INNER JOIN
+					    pedido ped ON com.id = ped.id_comercial
+					        INNER JOIN
+					    cliente clie ON clie.id = ped.id_cliente
+					WHERE
+					    com.id = ?;
+	        		""",(rs, rowNum) -> listaDatos.get(ii).put("numPedidosTotal", rs.getInt("numPedidosTotal"))
+	    	        , listaIds.get(i));
+			
+			jdbcTemplate.query(
+					"""
+	    		SELECT 
+				    COUNT(ped.id) AS numPedidosTrimestre
+				FROM
+				    comercial com
+				        INNER JOIN
+				    pedido ped ON com.id = ped.id_comercial
+				        INNER JOIN
+				    cliente clie ON clie.id = ped.id_cliente
+				WHERE
+				    com.id = ? AND datediff(curdate(), ped.fecha) < (90);
+	        		""",(rs, rowNum) -> listaDatos.get(ii).put("numPedidosTrimestre", rs.getInt("numPedidosTrimestre"))
+	    	        , listaIds.get(i));
+			
+			jdbcTemplate.query(
+					"""
+	    		SELECT 
+				    COUNT(ped.id) AS numPedidosAnio
+				FROM
+				    comercial com
+				        INNER JOIN
+				    pedido ped ON com.id = ped.id_comercial
+				        INNER JOIN
+				    cliente clie ON clie.id = ped.id_cliente
+				WHERE
+				    com.id = ? AND datediff(curdate(), ped.fecha) < (365);
+	        		""",(rs, rowNum) -> listaDatos.get(ii).put("numPedidosAnio", rs.getInt("numPedidosAnio"))
+	    	        , listaIds.get(i));
+			
+			jdbcTemplate.query(
+					"""
+	    		SELECT 
+				    COUNT(ped.id) AS numPedidosLustro
+				FROM
+				    comercial com
+				        INNER JOIN
+				    pedido ped ON com.id = ped.id_comercial
+				        INNER JOIN
+				    cliente clie ON clie.id = ped.id_cliente
+				WHERE
+				    com.id = ? AND datediff(curdate(), ped.fecha) < (365 * 5);
+	        		""",(rs, rowNum) -> listaDatos.get(ii).put("numPedidosLustro", rs.getInt("numPedidosLustro"))
+	    	        , listaIds.get(i));
+		}
+		
+		return listaDatos;
+        
 	}
 	
 }
