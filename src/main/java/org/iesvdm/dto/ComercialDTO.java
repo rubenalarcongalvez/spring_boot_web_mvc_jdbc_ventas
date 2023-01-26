@@ -1,5 +1,7 @@
 package org.iesvdm.dto;
 
+import java.math.BigDecimal;
+
 import org.iesvdm.modelo.Comercial;
 
 public class ComercialDTO extends Comercial {
@@ -7,7 +9,7 @@ public class ComercialDTO extends Comercial {
 	private double totalFacturado;
 	private double mediaFacturada;
 
-	public ComercialDTO(int id, String nombre, String apellido1, String apellido2, float comision,
+	public ComercialDTO(int id, String nombre, String apellido1, String apellido2, BigDecimal comision,
 			double totalFacturado, double mediaFacturada) {
 		super(id, nombre, apellido1, apellido2, comision);
 		this.totalFacturado = totalFacturado;

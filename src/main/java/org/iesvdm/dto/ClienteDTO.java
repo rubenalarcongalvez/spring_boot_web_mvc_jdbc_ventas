@@ -13,10 +13,10 @@ public class ClienteDTO extends Cliente {
 	int numPedidosAnio;
 	int numPedidosLustro;
 	
-	public ClienteDTO(long id, String nombre, String apellido1, String apellido2, String ciudad, int categoria, int idComercial, 
+	public ClienteDTO(long id, String nombre, String apellido1, String apellido2, String email, String ciudad, int categoria, int idComercial, 
 			String nombreComercial, int numPedidosTotal, int numPedidosTrimestre, int numPedidosAnio,
 			int numPedidosLustro) {
-		super(id, nombre, apellido1, apellido2, ciudad, categoria);
+		super(id, nombre, apellido1, apellido2, email, ciudad, categoria);
 		this.idComercial = idComercial;
 		this.nombreComercial = nombreComercial;
 		this.numPedidosTotal = numPedidosTotal;

@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>GENERAL</title>
+
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+<style>
+.clearfix::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+</style>
+</head>
+<body>
+<body>
+
+	<header th:fragment="header" class="d-flex gap-3 p-3 bg-primary">
+		<a th:href="@{/clientes}"
+			class="btn btn-success text-white">Clientes</a> <a
+			th:href="@{/comerciales}" class="btn btn-secondary text-white">Comerciales</a>
+	</header>
+
+</body>
+</body>
+</html>

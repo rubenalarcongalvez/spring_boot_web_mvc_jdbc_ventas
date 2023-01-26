@@ -1,5 +1,13 @@
 package org.iesvdm.modelo;
 
+import org.iesvdm.validator.RangoCategoria;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +21,33 @@ import lombok.NoArgsConstructor;
 public class Cliente {
 	
 	private long id;
+	
+	@NotBlank(message = "{notblank-nombre}")
+	@Size(min=4, message = "{nombre-min}")
+	@Size(max=30, message = "{nombre-max}")
 	private String nombre;
+	
+	@NotBlank(message = "{notblank-apellido1}")
+	@Size(min=4, message = "{apellido1-min}")
+	@Size(max=30, message = "{apellido1-max}")
 	private String apellido1;
+	
 	private String apellido2;
+	
+	@NotBlank(message = "{notblank-email}")
+	@Email(message = "{email-patron}", regexp="^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
+	private String email;
+	
+	@NotBlank(message = "{notblank-ciudad}")
+	@Size(max=50, message = "{ciudad-max}")
 	private String ciudad;
-	private int categoria;
+	
+//	@NotNull(message = "{notblank-categoria}")
+//	@Min(value = 100, message = "{categoria-min}")
+//	@Max(value = 1000, message = "{categoria-max}")
+	
+//	@RangoCategoria(message = "No haría falta porque ya predeterminamos uno")
+	@RangoCategoria(value = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000})
+	private Integer categoria;
 	
 }

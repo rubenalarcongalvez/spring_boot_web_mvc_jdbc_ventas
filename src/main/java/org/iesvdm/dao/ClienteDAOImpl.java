@@ -40,20 +40,20 @@ public class ClienteDAOImpl implements ClienteDAO {
 							VALUES  (     ?,         ?,         ?,       ?,         ?)
 						   """;
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
+		KeyHolder keyHolder = new GeneratedKeyHolder(); // Generamos el KeyHolder
 		//Con recuperación de id generado
-		int rows = jdbcTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement(sqlInsert, new String[] { "id" });
-			int idx = 1;
-			ps.setString(idx++, cliente.getNombre());
+		int rows = jdbcTemplate.update(connection -> { // Actualizamos las filas para añadir una más
+			PreparedStatement ps = connection.prepareStatement(sqlInsert, new String[] { "id" }); // Con esto, creamos una fila más
+			int idx = 1; //Decimos por dónde empieza
+			ps.setString(idx++, cliente.getNombre()); //Para la columna 1, asignamos el nombre del cliente y luego sumamos el idx.
 			ps.setString(idx++, cliente.getApellido1());
 			ps.setString(idx++, cliente.getApellido2());
 			ps.setString(idx++, cliente.getCiudad());
 			ps.setInt(idx, cliente.getCategoria());
-			return ps;
+			return ps; // Devuelve el número de filas insertadas
 		},keyHolder);
 		
-		cliente.setId(keyHolder.getKey().intValue());
+		cliente.setId(keyHolder.getKey().intValue()); //Como hemos obtenido el id gracias al KeyHolder, lo asignamos al objeto cliente
 		
 		//Sin recuperación de id generado
 //		int rows = jdbcTemplate.update(sqlInsert,
@@ -64,7 +64,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 //							cliente.getCategoria()
 //					);
 
-		log.info("Insertados {} registros.", rows);
+		log.info("Insertados {} registros.", rows); //Mostramos el log si queremos
 	}
 
 	/**
@@ -73,12 +73,13 @@ public class ClienteDAOImpl implements ClienteDAO {
 	@Override
 	public List<Cliente> getAll() {
 		
-		List<Cliente> listClie = jdbcTemplate.query(
+		List<Cliente> listClie = jdbcTemplate.query( // Ejecutamos directamente la row que nos devuelve la lista
                 "SELECT * FROM cliente",
                 (rs, rowNum) -> new Cliente(rs.getInt("id"),
                 						 	rs.getString("nombre"),
                 						 	rs.getString("apellido1"),
                 						 	rs.getString("apellido2"),
+                						 	rs.getString("email"),
                 						 	rs.getString("ciudad"),
                 						 	rs.getInt("categoría")
                 						 	)
@@ -102,6 +103,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             						 						rs.getString("nombre"),
             						 						rs.getString("apellido1"),
             						 						rs.getString("apellido2"),
+            						 						rs.getString("email"),
             						 						rs.getString("ciudad"),
             						 						rs.getInt("categoría")) 
 								, id

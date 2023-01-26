@@ -7,16 +7,20 @@ import java.util.OptionalDouble;
 
 import org.iesvdm.dto.ComercialDTO;
 import org.iesvdm.dto.PedidoDTO;
+import org.iesvdm.exception.ExcepcionGlobal;
 import org.iesvdm.modelo.Comercial;
 import org.iesvdm.service.ComercialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
+
+import jakarta.validation.Valid;
 
 @Controller
 //Se puede fijar ruta base de las peticiones de este controlador.
@@ -81,21 +85,27 @@ public class ComercialController {
 	}
 	
 	@GetMapping("/comerciales/crear")
-	public String crear(Model model) {
-				
-		Comercial comercial = new Comercial();
-		model.addAttribute(comercial);
+	public String crear(@ModelAttribute Comercial comercial, Model model) {
 		
 		return "crear-comercial";
 		
 	}
 	
 	@PostMapping("/comerciales/crear")
-	public RedirectView submitCrear(@ModelAttribute("comercial") Comercial comercial) {
+	public String submitCrear(@Valid @ModelAttribute Comercial comercial, BindingResult bindingResulted, Model model) {
 		
-		comercialService.newComercial(comercial);
-				
-		return new RedirectView("/comerciales") ;
+		String vista = "";
+
+		if (bindingResulted.hasErrors()) {
+			model.addAttribute("comercial", comercial);
+			model.addAttribute("toString", comercial.toString());
+			vista = "crear-comercial";
+		} else {
+			comercialService.newComercial(comercial);
+			vista = "redirect:/comercial";
+		}
+		
+		return vista;
 		
 	}
 	
@@ -124,6 +134,21 @@ public class ComercialController {
 		comercialService.deleteComercial(id);
 		
 		return new RedirectView("/comerciales");
+	}
+	
+	//Control de errores globales
+	@GetMapping("/global-runtime-exception")
+	public String globalRuntimeException() {
+		throw new RuntimeException("FUNCIONA CORRECTAMENTE MAL - EXCEPCIÓN GLOBAL.");
+
+		//return "global-runtime-exception"; No lo ponemos porque ya lo hace la RuntimeException y nos redirige a error.html
+	}
+
+	@GetMapping("/global-mi-excepcion")
+	public String globalMiExcepcion() throws ExcepcionGlobal {
+		throw new ExcepcionGlobal();
+
+		//return "demoth-mi-excepcion"; No lo ponemos porque ya lo hace MiExcepcion y nos redirige a error-mi-excepcion.html
 	}
 
 }

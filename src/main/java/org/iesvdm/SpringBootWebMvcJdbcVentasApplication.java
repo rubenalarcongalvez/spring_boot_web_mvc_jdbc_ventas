@@ -1,5 +1,6 @@
 package org.iesvdm;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.iesvdm.dao.ClienteDAO;
@@ -78,10 +79,10 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner 
 		}
 
 		// Como es un cliente nuevo a persistir, id a 0
-		Cliente clienteNew = new Cliente(0, "Jose M", "Martín", null, "Málaga", 100);
+		Cliente clienteNew = new Cliente(0, "Jose M", "Martín", "josemmartin@gmail.com" , null, "Málaga", 100);
 
 		// Como es un comercial nuevo a persistir, id a 0
-		Comercial comercialNew = new Comercial(0, "Alfredo P", "Porras", null, 0);
+		Comercial comercialNew = new Comercial(0, "Alfredo P", "Porras", null, BigDecimal.ZERO);
 
 		// create actualiza el id
 		clienteDAO.create(clienteNew);

@@ -3,11 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title th:text="#{crearcomercial}">Crear comercial</title>
+
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+
 <style>
 .clearfix::after {
 	content: "";
 	display: block;
 	clear: both;
+}
+
+.error {
+	color: red;
 }
 </style>
 </head>
@@ -19,48 +26,83 @@
 			<div style="float: left; width: 50%">
 				<h1 th:text="#{crearcomercial}">Crear Comercial</h1>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;min-height: 80px;position: relative;">
-				
-				<div style="position: absolute; left: 39%; top : 39%;">
-					
-						<form action="/comerciales" >
-							<input type="submit" th:value="#{volver}" />
-						</form>
-					</div>
-				
+			<div
+				style="float: none; width: auto; overflow: hidden; min-height: 80px; position: relative;">
+
+				<div style="position: absolute; left: 39%; top: 39%;">
+
+					<form action="/comerciales">
+						<input type="submit" th:value="#{volver}" />
+					</form>
+				</div>
+
 			</div>
 		</div>
 		<div class="clearfix">
 			<hr />
 		</div>
 
-		<div style="display: flex; flex-direction:column; align-items: center;">
-			<h2 style="display:flex; justify-content:center;" th:text="#{crearcomercial}">Crear comercial</h2>
-			<div
-				style="width: 300px; border: 5px solid lightblue; border-radius: 5px;">
-				<form style="display: flex; flex-direction: column;" th:action="@{/comerciales/crear}" th:object="${comercial}" method="post">
-					<input th:placeholder="#{nombre}"
-						style="margin: 25px; padding: 10px;"
-						th:field="*{nombre}"
-						required> 
-					<input
-						th:placeholder="#{apellido1}" style="margin: 25px; padding: 10px;"
-						th:field="*{apellido1}"
-						required>
-					<input th:placeholder="#{apellido2condicional}"
-						style="margin: 25px; padding: 10px;"
-						th:field="*{apellido2}"> 
-					<input th:placeholder="#{comision}"
-						style="margin: 25px; padding: 10px;"
-						th:field="*{comision}"
-						required>
-					<input type="submit"
-						th:value="#{crear}"
-						style="margin: 25px; padding: 10px; border-radius:5px; background-color: lightblue;"
-						>
+		<div
+			style="display: flex; flex-direction: column; align-items: center;">
+			<h2 style="display: flex; justify-content: center;"
+				th:text="#{crearcomercial}">Crear comercial</h2>
+			<div class="container">
+				<form style="border: 5px solid lightblue; border-radius: 5px;"
+					th:action="@{/comerciales/crear}" th:object="${comercial}"
+					method="post">
+					<div class="row">
+						<div style="display: flex; flex-direction: column;"
+							class="col col-md-6">
+							<input th:placeholder="#{nombre}"
+								style="margin: 25px; padding: 10px; flex-grow: 1"
+								th:field="*{nombre}">
+
+							<ul th:if="${#fields.hasErrors('nombre')}"
+								style="margin: 0 25px; padding: 0; padding-left: 10px">
+								<li th:each="err : ${#fields.errors('nombre')}" th:text="${err}"
+									class="error" />
+							</ul>
+						</div>
+
+						<div style="display: flex; flex-direction: column;"
+							class="col col-md-6">
+							<input th:placeholder="#{apellido1}"
+								style="margin: 25px; padding: 10px; flex-grow: 1"
+								th:field="*{apellido1}">
+
+							<ul th:if="${#fields.hasErrors('apellido1')}"
+								style="margin: 0 25px; padding: 0; padding-left: 10px">
+								<li th:each="err : ${#fields.errors('apellido1')}"
+									th:text="${err}" class="error" />
+							</ul>
+						</div>
+
+						<div style="display: flex; flex-direction: column;"
+							class="col col-md-6">
+							<input th:placeholder="#{apellido2condicional}"
+								style="margin: 25px; padding: 10px; flex-grow: 1"
+								th:field="*{apellido2}">
+						</div>
+
+						<div style="display: flex; flex-direction: column;"
+							class="col col-md-6">
+							<input th:placeholder="#{comision}"
+								style="margin: 25px; padding: 10px; flex-grow: 1"
+								th:field="*{comision}">
+
+							<p th:if="${#fields.hasErrors('comision')}" th:errorclass="error"
+								th:errors="*{comision}"
+								style="margin: 0 25px; padding: 0; padding-left: 10px" />
+						</div>
+
+						<input type="submit" th:value="#{crear}" class="col"
+							style="margin: 25px; padding: 10px; border-radius: 5px; background-color: lightblue;">
+					</div>
 				</form>
 			</div>
 		</div>
+
+		<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </body>
 </html>
