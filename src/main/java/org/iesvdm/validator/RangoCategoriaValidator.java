@@ -21,6 +21,8 @@ public class RangoCategoriaValidator implements ConstraintValidator<RangoCategor
 		// Si la lista contiene al número, es válido, si no, salta el error que hemos
 		// predeterminado
 
+		if (value == null) return false;
+		
 		for (int i = 0; i < rangoCategoria.length && !isValid; i++) {
 			if (rangoCategoria[i] == value)
 				isValid = true;

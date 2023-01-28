@@ -43,12 +43,13 @@
 			<h2 style="display:flex; justify-content:center;" th:text="#{crearcliente}">Crear cliente</h2>
 			<div
 				style="width: 300px; border: 5px solid lightblue; border-radius: 5px;">
-				<form style="display: flex; flex-direction: column;"
+				<form style="display: flex; flex-direction: column;" id="idFormularioCrearCliente"
 					th:action="@{/clientes/crear}" th:object="${cliente}" method="post">
 					<div style="display: flex; flex-direction: column;">
 						<input th:placeholder="#{nombre}"
 							style="margin: 25px; padding: 10px; flex-grow: 1"
-							th:field="*{nombre}">
+							th:field="*{nombre}"
+							>
 
 						<ul th:if="${#fields.hasErrors('nombre')}"
 							style="margin: 0 25px; padding: 0; padding-left: 10px">

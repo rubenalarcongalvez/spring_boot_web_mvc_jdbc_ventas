@@ -42,12 +42,14 @@ public class Cliente {
 	@Size(max=50, message = "{ciudad-max}")
 	private String ciudad;
 	
-//	@NotNull(message = "{notblank-categoria}")
+	
 //	@Min(value = 100, message = "{categoria-min}")
 //	@Max(value = 1000, message = "{categoria-max}")
 	
+	
 //	@RangoCategoria(message = "No haría falta porque ya predeterminamos uno")
-	@RangoCategoria(value = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000})
+	@NotNull(message = "{notblank-categoria}")
+	@RangoCategoria(value = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000}, message = "La categoría debe estar entre 100 y 1000")
 	private Integer categoria;
 	
 }
