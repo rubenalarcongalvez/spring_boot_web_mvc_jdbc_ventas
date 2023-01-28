@@ -102,7 +102,7 @@ public class ComercialController {
 			vista = "crear-comercial";
 		} else {
 			comercialService.newComercial(comercial);
-			vista = "redirect:/comercial";
+			vista = "redirect:/comerciales";
 		}
 		
 		return vista;
