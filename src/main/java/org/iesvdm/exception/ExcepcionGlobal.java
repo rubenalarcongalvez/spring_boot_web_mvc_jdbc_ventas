@@ -5,6 +5,6 @@ public class ExcepcionGlobal extends Exception { //Hereda de Exception general
 	private static final long serialVersionUID = 1L;
 
 	public ExcepcionGlobal() {
-		super("Mensaje de mi exception... PERSONALIZADO GLOBAL"); //Establezco mi mensaje de excepción
+		super("Mensaje de mi exception... PERSONALIZADO"); //Establezco mi mensaje de excepción
 	}
 }

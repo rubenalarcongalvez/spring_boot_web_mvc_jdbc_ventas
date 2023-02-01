@@ -127,12 +127,14 @@ public class ClienteDAOImpl implements ClienteDAO {
 														nombre = ?, 
 														apellido1 = ?, 
 														apellido2 = ?,
+														email = ?,
 														ciudad = ?,
 														categoría = ?  
 												WHERE id = ?
 										""", cliente.getNombre()
 										, cliente.getApellido1()
 										, cliente.getApellido2()
+										, cliente.getEmail()
 										, cliente.getCiudad()
 										, cliente.getCategoria()
 										, cliente.getId());
