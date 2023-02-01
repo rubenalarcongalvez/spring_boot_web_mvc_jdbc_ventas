@@ -10,9 +10,18 @@
 	clear: both;
 }
 
+.error {
+	color: red;
+}
+
 </style>
+
+<link th:fragment="bootstrap" rel="stylesheet" href="/css/bootstrap.min.css" />
+
 </head>
 <body>
+
+<div th:insert="~{../fragments/general.html :: header}"></div>
 
 <div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
 	<form  th:action="@{/comerciales/editar/__${comercial.id}__}" th:object="${comercial}" method="post" >		
@@ -49,7 +58,12 @@
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
 				<input th:field="*{nombre}"/>
-			</div> 
+					<ul th:if="${#fields.hasErrors('nombre')}"
+						style="margin: 0; padding: 0;">
+						<li th:each="err : ${#fields.errors('nombre')}" th:text="${err}"
+							class="error" />
+					</ul>
+				</div> 
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
 			<div style="float: left;width: 50%">
@@ -57,6 +71,11 @@
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
 				<input th:field="*{apellido1}"/>
+					<ul th:if="${#fields.hasErrors('apellido1')}"
+						style="margin: 0; padding: 0;">
+						<li th:each="err : ${#fields.errors('apellido1')}" th:text="${err}"
+							class="error" />
+					</ul>
 			</div> 
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
@@ -73,7 +92,12 @@
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
 				<input th:field="*{comision}"/>
-			</div> 
+					<ul th:if="${#fields.hasErrors('comision')}"
+						style="margin: 0; padding: 0;">
+						<li th:each="err : ${#fields.errors('comision')}" th:text="${err}"
+							class="error" />
+					</ul>
+				</div> 
 		</div>
 			
 	</form>

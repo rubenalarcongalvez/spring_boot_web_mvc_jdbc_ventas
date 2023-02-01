@@ -146,7 +146,7 @@ public class ComercialDAOImpl implements ComercialDAO {
   							  rs.getString("nombre"), 
   							  rs.getString("apellido1"),
   							  rs.getString("apellido2"), 
-  							  rs.getBigDecimal("comisión").setScale(2, BigDecimal.ROUND_HALF_EVEN),
+  							  rs.getBigDecimal("comisión"),
   							  Math.round(rs.getDouble("total_facturado") * 100) / 100.0,
   							  Math.round(rs.getDouble("media_facturada") * 100) / 100.0)
   						 	, id_comercial

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.iesvdm.dto.ClienteDTO;
 import org.iesvdm.mapstruct.ClienteMapper;
 import org.iesvdm.modelo.Cliente;
+import org.iesvdm.modelo.Comercial;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.service.ClienteService;
 import org.mapstruct.Mapping;
@@ -59,6 +60,8 @@ public class ClienteController {
 	@GetMapping("/clientes/{id}")
 	public String detalle(Model model, @PathVariable Integer id ) {
 		
+		boolean tienePedidos = true;
+		
 		Cliente cliente = clienteService.one(id);
 		
 		ArrayList<HashMap<String, Object>> listaDatos = clienteService.obtenerDatosAdicionales(id);
@@ -67,19 +70,26 @@ public class ClienteController {
 		
 		ClienteDTO clienteDTO;
 		
-		for (int i = 0; i < listaDatos.size(); i++) {
-			clienteDTO = clienteMapper.listaPedidos(cliente,
-					(String) listaDatos.get(i).get("nombreComercial"),
-					(int) listaDatos.get(i).get("idComercial"),
-					(int) listaDatos.get(i).get("numPedidosTotal"),
-					(int) listaDatos.get(i).get("numPedidosTrimestre"),
-					(int) listaDatos.get(i).get("numPedidosAnio"),
-					(int) listaDatos.get(i).get("numPedidosLustro"));
+		if(listaDatos.isEmpty()) {
+			listaClientesComerciales.add(clienteMapper.listaPedidos(cliente, "NO TIENE", -1, -1, -1, -1, -1));
+			tienePedidos = false;
+		} else {
+			for (int i = 0; i < listaDatos.size(); i++) {
+				clienteDTO = clienteMapper.listaPedidos(cliente,
+						(String) listaDatos.get(i).get("nombreComercial"),
+						(int) listaDatos.get(i).get("idComercial"),
+						(int) listaDatos.get(i).get("numPedidosTotal"),
+						(int) listaDatos.get(i).get("numPedidosTrimestre"),
+						(int) listaDatos.get(i).get("numPedidosAnio"),
+						(int) listaDatos.get(i).get("numPedidosLustro"));
 
-			listaClientesComerciales.add(clienteDTO);
+				listaClientesComerciales.add(clienteDTO);
+			}
 		}
 		
 		model.addAttribute("listaClientesComerciales", listaClientesComerciales);
+		
+		model.addAttribute("tienePedidos", tienePedidos);
 		
 		return "detalle-cliente";
 		
@@ -123,13 +133,19 @@ public class ClienteController {
 		
 	}
 	
-	
-	@PostMapping("/clientes/editar/{id}")
-	public RedirectView submitEditar(@ModelAttribute("cliente") Cliente cliente) {
+	@PostMapping("/clientes/editar/{id}") 
+	public String editar(@Valid @ModelAttribute Cliente cliente, BindingResult bindingResult, Model model) {
 		
-		clienteService.replaceCliente(cliente);		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("cliente", cliente);
+			model.addAttribute("toString", cliente.toString());
+			
+			return "editar-cliente";
+		} else {
+			clienteService.replaceCliente(cliente);
+			return "redirect:/clientes";
+		}
 		
-		return new RedirectView("/clientes");
 	}
 	
 	@PostMapping("/clientes/borrar/{id}")

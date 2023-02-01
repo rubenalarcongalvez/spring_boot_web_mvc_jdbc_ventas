@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>GENERAL</title>
 
-<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link th:fragment="bootstrap" rel="stylesheet" href="/css/bootstrap.min.css" />
 
 <style>
 .clearfix::after {
@@ -17,11 +17,20 @@
 <body>
 <body>
 
-	<header th:fragment="header" class="d-flex gap-3 p-3 bg-primary">
-		<a th:href="@{/clientes}"
-			class="btn btn-success text-white">Clientes</a> <a
-			th:href="@{/comerciales}" class="btn btn-secondary text-white">Comerciales</a>
-	</header>
+	<div th:fragment="fragmentoGeneral">
+	
+		<header class="d-flex justify-content-between m-2">
+			<a th:href="@{/global-runtime-exception}"
+				class="btn btn-danger text-white">EXCEPCIÓN GLOBAL</a> <a
+				th:href="@{/global-mi-excepcion}" class="btn btn-warning text-white">EXCEPCIÓN
+				PERSONALIZADA</a>
+		</header>
+
+		<nav th:fragment="header" class="d-flex gap-3 p-3 bg-primary">
+			<a th:href="@{/clientes}" class="btn btn-success text-white">Clientes</a>
+			<a th:href="@{/comerciales}" class="btn btn-secondary text-white">Comerciales</a>
+		</nav>
+	</div>
 
 </body>
 </body>

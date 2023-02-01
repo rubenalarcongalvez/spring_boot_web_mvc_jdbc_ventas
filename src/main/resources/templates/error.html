@@ -11,11 +11,16 @@
 }
 
 </style>
+
+<link th:fragment="bootstrap" rel="stylesheet" href="/css/bootstrap.min.css" />
+
 </head>
 <body>
 <body>
 
-	<span th:text="${traza}"></span>
+<div th:insert="~{../fragments/general.html :: header}"></div>
+
+	<span th:text="${traza}">Hola</span>
 	
 </body>
 </body>

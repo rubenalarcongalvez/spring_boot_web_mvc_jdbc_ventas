@@ -11,8 +11,13 @@
 }
 
 </style>
+
+<link th:fragment="bootstrap" rel="stylesheet" href="/css/bootstrap.min.css" />
+
 </head>
 <body>
+
+<div th:insert="~{../fragments/general.html :: header}"></div>
 
 <div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
 		<div class="clearfix">
@@ -69,6 +74,14 @@
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
 			<div style="float: left;width: 50%">
+				<label>Email</label>
+			</div>
+			<div style="float: none;width: auto;overflow: hidden;">
+				<input th:value="${listaClientesComerciales.get(0).email}" value="Email" readonly="readonly"/>
+			</div> 
+		</div>
+		<div style="margin-top: 6px;" class="clearfix">
+			<div style="float: left;width: 50%">
 				<label th:text="#{ciudad}">Ciudad</label>
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
@@ -87,31 +100,40 @@
 		<div class="clearfix">
 			<hr/>
 		</div>
-		
-		<h2>Comerciales asociados</h2>
-		
-		<div class="clearfix">
-			<div style="float: left;width: 20%">Nº ped. total</div>
-			<div style="float: left;width: 20%">Nº ped. trimestre</div>
-			<div style="float: left;width: 20%">Nº ped. año</div>
-			<div style="float: left;width: 20%">Nº ped. lustro</div>
-			<div style="float: left;width: 20%">Nombre comercial</div>
-		</div>
-		<div class="clearfix">
-			<hr/>
+
+		<div th:if="${tienePedidos}">
+
+			<h2>Comerciales asociados</h2>
+
+			<div class="clearfix">
+				<div style="float: left; width: 20%">Nº ped. total</div>
+				<div style="float: left; width: 20%">Nº ped. trimestre</div>
+				<div style="float: left; width: 20%">Nº ped. año</div>
+				<div style="float: left; width: 20%">Nº ped. lustro</div>
+				<div style="float: left; width: 20%">Nombre comercial</div>
+			</div>
+			<div class="clearfix">
+				<hr />
+			</div>
+
+			<div th:each="clienteDTO : ${listaClientesComerciales}">
+				<div style="float: left; width: 20%"
+					th:text="${clienteDTO.numPedidosTotal}"></div>
+				<div style="float: left; width: 20%"
+					th:text="${clienteDTO.numPedidosTrimestre}"></div>
+				<div style="float: left; width: 20%"
+					th:text="${clienteDTO.numPedidosAnio}"></div>
+				<div style="float: left; width: 20%"
+					th:text="${clienteDTO.numPedidosLustro}"></div>
+				<form th:action="@{/comerciales/}+${clienteDTO.idComercial} "
+					style="display: inline;">
+					<input type="submit" th:value="${clienteDTO.nombreComercial}"
+						style="font-size: 12px;" />
+				</form>
+			</div>
 		</div>
 
-		<div th:each="clienteDTO : ${listaClientesComerciales}">
-			<div style="float: left;width: 20%" th:text="${clienteDTO.numPedidosTotal}"></div>
-			<div style="float: left;width: 20%" th:text="${clienteDTO.numPedidosTrimestre}"></div>
-			<div style="float: left;width: 20%" th:text="${clienteDTO.numPedidosAnio}"></div>
-			<div style="float: left;width: 20%" th:text="${clienteDTO.numPedidosLustro}"></div>
-			<form th:action="@{/comerciales/}+${clienteDTO.idComercial} " style="display: inline;">
-	    			<input type="submit" th:value="${clienteDTO.nombreComercial}"/>
-			</form>
-		</div>
-
-</div>
+	</div>
 
 </body>
 </html>

@@ -2,15 +2,12 @@ package org.iesvdm.controlador;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalDouble;
 
 import org.iesvdm.dto.ComercialDTO;
 import org.iesvdm.dto.PedidoDTO;
-import org.iesvdm.exception.ExcepcionGlobal;
 import org.iesvdm.modelo.Comercial;
 import org.iesvdm.service.ComercialService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,11 +50,22 @@ public class ComercialController {
 	@GetMapping("/comerciales/{id}")
 	public String detalle(Model model, @PathVariable Integer id ) {
 		
-		ComercialDTO comercial = comercialService.oneComercialDTO(id);
+		boolean tienePedidos = true;
+		
+		Comercial comercial = comercialService.oneComercial(id);
 		model.addAttribute("comercial", comercial);
+		
+		ComercialDTO comercialDTO = comercialService.oneComercialDTO(id);
+		model.addAttribute("comercialDTO", comercialDTO);
 		
 		List<PedidoDTO> pedidos = comercialService.onePedido(id);
 		model.addAttribute("pedidos", pedidos);
+		
+		if (pedidos.isEmpty()) {
+			tienePedidos = false;
+		}
+		
+		model.addAttribute("tienePedidos", tienePedidos);
 		
 		OptionalDouble max = pedidos.stream().mapToDouble(PedidoDTO::getTotal).max();
 		
@@ -119,13 +127,19 @@ public class ComercialController {
 		
 	}
 	
-	
-	@PostMapping("/comerciales/editar/{id}")
-	public RedirectView submitEditar(@ModelAttribute("comercial") Comercial comercial) {
+	@PostMapping("/comerciales/editar/{id}") 
+	public String editar(@Valid @ModelAttribute Comercial comercial, BindingResult bindingResult, Model model) {
 		
-		comercialService.replaceComercial(comercial);		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("comercial", comercial);
+			model.addAttribute("toString", comercial.toString());
+			
+			return "editar-comercial";
+		} else {
+			comercialService.replaceComercial(comercial);
+			return "redirect:/comerciales";
+		}
 		
-		return new RedirectView("/comerciales");
 	}
 	
 	@PostMapping("/comerciales/borrar/{id}")
@@ -134,21 +148,6 @@ public class ComercialController {
 		comercialService.deleteComercial(id);
 		
 		return new RedirectView("/comerciales");
-	}
-	
-	//Control de errores globales
-	@GetMapping("/global-runtime-exception")
-	public String globalRuntimeException() {
-		throw new RuntimeException("FUNCIONA CORRECTAMENTE MAL - EXCEPCIÓN GLOBAL.");
-
-		//return "global-runtime-exception"; No lo ponemos porque ya lo hace la RuntimeException y nos redirige a error.html
-	}
-
-	@GetMapping("/global-mi-excepcion")
-	public String globalMiExcepcion() throws ExcepcionGlobal {
-		throw new ExcepcionGlobal();
-
-		//return "demoth-mi-excepcion"; No lo ponemos porque ya lo hace MiExcepcion y nos redirige a error-mi-excepcion.html
 	}
 
 }

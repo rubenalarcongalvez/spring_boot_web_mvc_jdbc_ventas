@@ -11,92 +11,108 @@
 }
 
 </style>
+
+<link th:fragment="bootstrap" rel="stylesheet" href="/css/bootstrap.min.css" />
+
 </head>
 <body>
 
-<div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
+<div th:insert="~{../fragments/general.html :: header}"></div>
+
+	<div id="contenedora"
+		style="float: none; margin: 0 auto; width: 900px;">
 		<div class="clearfix">
 			<div style="float: left; width: 50%">
 				<h1 th:text="#{detallecomercial}">Detalle Comercial</h1>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;min-height: 80px;position: relative;">
-				
-				<div style="position: absolute; left: 39%; top : 39%;">
-					
-						<form action="/comerciales" >
-							<input type="submit" th:value="#{volver}" />
-						</form>
-					</div>
-				
+			<div
+				style="float: none; width: auto; overflow: hidden; min-height: 80px; position: relative;">
+
+				<div style="position: absolute; left: 39%; top: 39%;">
+
+					<form action="/comerciales">
+						<input type="submit" th:value="#{volver}" />
+					</form>
+				</div>
+
 			</div>
 		</div>
-		
+
 		<div class="clearfix">
-			<hr/>
+			<hr />
 		</div>
 
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
+			<div style="float: left; width: 50%">
 				<label>ID</label>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.id}" value="ID" readonly="readonly"/>
-			</div> 
+			<div style="float: none; width: auto; overflow: hidden;">
+				<input th:value="${comercial.id}" value="ID" readonly="readonly" />
+			</div>
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
+			<div style="float: left; width: 50%">
 				<label th:text="#{nombre}">Nombre</label>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.nombre}" value="Nombre" readonly="readonly"/>
-			</div> 
+			<div style="float: none; width: auto; overflow: hidden;">
+				<input th:value="${comercial.nombre}" value="Nombre"
+					readonly="readonly" />
+			</div>
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
+			<div style="float: left; width: 50%">
 				<label th:text="#{apellido1}">Primer apellido</label>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.apellido1}" value="Apellido1" readonly="readonly"/>
-			</div> 
+			<div style="float: none; width: auto; overflow: hidden;">
+				<input th:value="${comercial.apellido1}" value="Apellido1"
+					readonly="readonly" />
+			</div>
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
+			<div style="float: left; width: 50%">
 				<label th:text="#{apellido2}">Segundo apellido</label>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.apellido2}" value="Apellido2" readonly="readonly"/>
-			</div> 
+			<div style="float: none; width: auto; overflow: hidden;">
+				<input th:value="${comercial.apellido2}" value="Apellido2"
+					readonly="readonly" />
+			</div>
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
+			<div style="float: left; width: 50%">
 				<label th:text="#{comision}">Comisión</label>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.comision}" value="Comisión" readonly="readonly"/>
-			</div> 
-		</div>
-		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
-				<label th:text="#{totalfacturado}">Total facturado</label>
+			<div style="float: none; width: auto; overflow: hidden;">
+				<input th:value="${comercial.comision}" value="Comisión"
+					readonly="readonly" />
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.totalFacturado}" value="Total Facturado" readonly="readonly"/>
-			</div> 
 		</div>
-		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 50%">
-				<label th:text="#{mediafacturada}">Media facturada</label>
+		<div th:if="${tienePedidos}">
+			<div style="margin-top: 6px;" class="clearfix">
+				<div style="float: left; width: 50%">
+					<label th:text="#{totalfacturado}">Total facturado</label>
+				</div>
+				<div style="float: none; width: auto; overflow: hidden;">
+					<input th:value="${comercialDTO.totalFacturado}"
+						value="Total Facturado" readonly="readonly" />
+				</div>
 			</div>
-			<div style="float: none;width: auto;overflow: hidden;">
-				<input th:value="${comercial.mediaFacturada}" value="Media Facturada" readonly="readonly"/>
-			</div> 
+			<div style="margin-top: 6px;" class="clearfix">
+				<div style="float: left; width: 50%">
+					<label th:text="#{mediafacturada}">Media facturada</label>
+				</div>
+				<div style="float: none; width: auto; overflow: hidden;">
+					<input th:value="${comercialDTO.mediaFacturada}"
+						value="Media Facturada" readonly="readonly" />
+				</div>
+			</div>
 		</div>
-		
-		<div class="clearfix">
+	</div>
+
+	<div class="clearfix">
 			<hr/>
 		</div>
 		
-		<div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
+		<div th:if="${tienePedidos}" id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
 		<div class="clearfix">
 			<div style="float: left; width: 50%">
 				<h1 th:text="#{detallepedido}">Detalle Pedido</h1>
@@ -183,7 +199,7 @@
 		<div class="clearfix">
 			<hr/>
 		</div>
-
+</div>
 </div>
 
 </body>
